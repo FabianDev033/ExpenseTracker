@@ -1,12 +1,12 @@
 import "./global.css";
 import { Text, View } from "react-native";
 import { NavigationContainer } from '@react-navigation/native';
-import TabNavigator from './src/navigation/TabNavigator';
+import RootStack from "./src/navigation/RootStack";
 
 export default function App() {
   return (
     <NavigationContainer>
-      <TabNavigator />
+      <RootStack />
     </NavigationContainer>
   );
 }
