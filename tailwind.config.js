@@ -1,10 +1,26 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  // NOTE: Update this to include the paths to all files that contain Nativewind classes.
-  content: ["./App.tsx", "./src/**/*.{js,jsx,ts,tsx}"],
+  content: [
+    "./App.tsx",
+    "./src/**/*.{js,jsx,ts,tsx}",
+    "./components/**/*.{js,jsx,ts,tsx}",
+  ],
   presets: [require("nativewind/preset")],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: "rgb(var(--color-primary) / <alpha-value>)",
+        secondary: "rgb(var(--color-secondary) / <alpha-value>)",
+        danger: "rgb(var(--color-danger) / <alpha-value>)",
+        white: "rgb(var(--color-white) / <alpha-value>)",
+        black: "rgb(var(--color-black) / <alpha-value>)",
+      },
+      fontFamily: {
+        sans: ["Lato_400Regular"],
+        lato: ["Lato_400Regular"],
+        "lato-bold": ["Lato_700Bold"],
+      },
+    },
   },
   plugins: [],
 };

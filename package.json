@@ -3,10 +3,13 @@
   "version": "1.0.0",
   "main": "index.ts",
   "dependencies": {
+    "@expo-google-fonts/lato": "^0.4.1",
     "@react-navigation/bottom-tabs": "^7.21.0",
     "@react-navigation/native": "^7.5.1",
     "@react-navigation/native-stack": "^7.21.0",
     "expo": "~57.0.29",
+    "expo-font": "~57.0.4",
+    "expo-splash-screen": "~57.0.10",
     "expo-status-bar": "~57.0.1",
     "nativewind": "4.2.7",
     "react": "19.2.3",
@@ -15,6 +18,7 @@
     "react-native-reanimated": "4.5.1",
     "react-native-safe-area-context": "~5.10.1",
     "react-native-screens": "~4.26.2",
+    "react-native-svg": "15.15.4",
     "react-native-worklets": "0.10.1"
   },
   "devDependencies": {
@@ -35,5 +39,6 @@
     "ios": "expo start --ios",
     "web": "expo start --web"
   },
-  "private": true
+  "private": true,
+  "packageManager": "pnpm@12.14.0+sha512.c18ba6d87993d3d164cb5e8948f32b2c06ee854487e06cd8d86781342fb3e5bb4634367034711e86802baa9c37bea906ce1929ad08d70884c97d801df13389a6"
 }
