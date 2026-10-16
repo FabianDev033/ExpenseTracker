@@ -1,13 +1,12 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import HomeScreen from "../screens/HomeScreen";
-import ExpensesScreen from "../screens/ExpensesScreen";
-import SettingsScreen from "../screens/SettingsScreen";
 import { palette } from "../theme/navigationTheme";
 import HomeIcon from "../assets/icons/Home";
 import ReceiptIcon from "../assets/icons/Recipt";
 import GearIcon from "../assets/icons/Gear";
+
+import { HomeScreen, ExpenseScreen, SettingsScreen } from "../screens";
 
 const Tab = createBottomTabNavigator();
 
@@ -35,7 +34,7 @@ export default function TabNavigator() {
       />
       <Tab.Screen
         name="Gastos"
-        component={ExpensesScreen}
+        component={ExpenseScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
             <ReceiptIcon color={color} width={size} height={size} />
