@@ -4,6 +4,7 @@ import { DefaultTheme, type Theme } from "@react-navigation/native";
 export const palette = {
   primary: "#4F46E5",
   secondary: "#0F766E",
+  danger: "#DC2626",
   white: "#F8FAFC",
   black: "#0F172A",
 } as const;

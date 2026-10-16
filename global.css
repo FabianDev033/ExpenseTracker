@@ -6,6 +6,7 @@
   :root {
     --color-primary: 79 70 229; /* #4F46E5 */
     --color-secondary: 15 118 110; /* #0F766E */
+    --color-danger: 220 38 38; /* #DC2626 */
     --color-white: 248 250 252; /* #F8FAFC */
     --color-black: 15 23 42; /* #0F172A */
   }
