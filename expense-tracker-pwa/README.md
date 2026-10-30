@@ -42,7 +42,7 @@ El precache cubre los recursos estáticos; no hay API ni almacenamiento de gasto
 
 Elegir `expense-tracker-pwa` como directorio raíz en Vercel o Netlify. Build: `pnpm build`; salida: `dist`. Se incluyen reglas SPA para que `/expenses/:id` funcione al recargar y el worker se actualice sin caché HTTP persistente.
 
-La publicación y su URL HTTPS quedan pendientes: este trabajo se entrega sin commits ni push. No se desplegó una versión distinta del código entregado.
+La publicación y su URL HTTPS quedan pendientes. Las ramas del sprint se revisan mediante PR; la configuración de hosting está preparada, pero todavía no hay un despliegue verificado.
 
 En Android/Chrome el botón Instalar App aparece cuando el navegador ofrece la instalación. En iOS se muestran instrucciones de Safari, salvo que ya esté abierta desde la pantalla de inicio. La disponibilidad depende del navegador y de que la app todavía no esté instalada.
 
