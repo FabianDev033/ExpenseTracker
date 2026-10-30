@@ -1,0 +1,4 @@
+/** @param {{ category: string }} props */
+export default function CategoryBadge({ category }) {
+  return <span className="category-badge">{category}</span>;
+}
