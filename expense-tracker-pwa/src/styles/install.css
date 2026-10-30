@@ -1,0 +1,23 @@
+.install-banner {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  width: calc(100% - 40px);
+  max-width: 560px;
+  margin: 0 auto 20px;
+  padding: 16px;
+  background: #eef2ff;
+  border: 1px solid #c7d2fe;
+  border-radius: 16px;
+}
+.install-banner > div {
+  flex: 1;
+  min-width: 180px;
+}
+.install-banner p {
+  line-height: 1.5;
+}
+.install-banner img {
+  border-radius: 10px;
+}
