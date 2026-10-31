@@ -13,7 +13,8 @@
   "dependencies": {
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "react-router-dom": "^7.18.5"
+    "react-router-dom": "^7.18.5",
+    "@fontsource/lato": "^5.3.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
