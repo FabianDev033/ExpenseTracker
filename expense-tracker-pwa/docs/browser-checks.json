@@ -1,0 +1,33 @@
+{
+  "browser": "Microsoft Edge (Chromium), headless",
+  "viewport": "Pixel 7 / iPhone 13 / desktop",
+  "checks": [
+    "summary",
+    "form validation and comma decimals",
+    "focus return",
+    "modal reset/cancel/Escape",
+    "URL navigation and active tab",
+    "detail refresh and direct-entry back fallback",
+    "missing IDs and routes",
+    "service worker active and static precache",
+    "offline deep-link reload and navigation",
+    "iOS guidance and standalone suppression (emulated)",
+    "install prompt lifecycle (simulated)",
+    "development StrictMode modal"
+  ],
+  "cachedAssets": [
+    "/registerSW.js",
+    "/index.html",
+    "/assets/lato-latin-700-normal-BUGMgin4.woff2",
+    "/assets/lato-latin-400-normal-BEhtfm5r.woff2",
+    "/assets/index-DTN38x7b.js",
+    "/assets/index-DKQgnUjV.css",
+    "/manifest.json",
+    "/icons/apple-touch-icon.png",
+    "/icons/favicon.png",
+    "/icons/icon-192.png",
+    "/icons/icon-512.png",
+    "/icons/maskable-512.png"
+  ],
+  "errors": []
+}

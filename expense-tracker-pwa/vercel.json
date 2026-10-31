@@ -1,0 +1,19 @@
+{
+  "rewrites": [
+    {
+      "source": "/((?!assets/|icons/|robots\\.txt|manifest\\.json|sw\\.js|workbox-|registerSW\\.js).*)",
+      "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/sw.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        }
+      ]
+    }
+  ]
+}
