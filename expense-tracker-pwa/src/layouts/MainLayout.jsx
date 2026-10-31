@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import NewExpenseModal from '../components/NewExpenseModal';
-
+import InstallBanner from '../components/InstallBanner';
 export default function MainLayout() {
   const [modalOpen, setModalOpen] = useState(false);
   const [notice, setNotice] = useState('');
@@ -46,7 +46,7 @@ export default function MainLayout() {
         <NavLink to="/expenses">Gastos</NavLink>
         <NavLink to="/settings">Ajustes</NavLink>
       </nav>
-
+      <InstallBanner />
       {modalOpen && (
         <NewExpenseModal
           onClose={() => setModalOpen(false)}
