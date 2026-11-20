@@ -1,0 +1,87 @@
+.expense-modal {
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  max-height: 90dvh;
+  margin: auto auto 0;
+  padding: 12px max(24px, env(safe-area-inset-right, 0px))
+    calc(24px + env(safe-area-inset-bottom, 0px))
+    max(24px, env(safe-area-inset-left, 0px));
+  border: 0;
+  border-radius: 24px 24px 0 0;
+  color: var(--text);
+  background: var(--surface);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.expense-modal[open] {
+  animation: sheet-in 220ms ease-out;
+}
+.expense-modal::backdrop {
+  background: rgb(15 23 42 / 0.5);
+}
+.sheet-handle {
+  width: 40px;
+  height: 4px;
+  border-radius: 4px;
+  background: #cbd5e1;
+  margin: 0 auto 20px;
+}
+.expense-modal h2 {
+  font-size: 24px;
+  color: var(--primary);
+  margin-bottom: 24px;
+}
+.expense-modal form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.form-field label {
+  font-weight: 700;
+}
+.form-field input,
+.form-field select {
+  min-height: 48px;
+  padding: 12px;
+  border: 1px solid #94a3b8;
+  border-radius: 12px;
+  width: 100%;
+  color: var(--text);
+  background: #fff;
+  font-size: 16px;
+}
+.field-help {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.form-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.form-error {
+  color: #b91c1c;
+  line-height: 1.5;
+}
+@keyframes sheet-in {
+  from {
+    transform: translateY(100%);
+    opacity: 0.4;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@media (max-height: 500px) {
+  .expense-modal {
+    max-height: 100dvh;
+  }
+}
