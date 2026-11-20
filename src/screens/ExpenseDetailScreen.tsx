@@ -1,14 +1,68 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React from "react";
+import { View, Text } from "react-native";
+import { useExpenses } from "../context/ExpensesContext";
+import { formatAmount, getCategoryMeta } from "../data/categories";
 
-const ExpenseDetailScreen = () => {
+const ExpenseDetailScreen = ({ route }: any) => {
+  const { expenses } = useExpenses();
+  const id = route?.params?.id;
+  const expense = expenses.find((item) => item.id === id);
+
+  if (!expense) {
     return (
-        <View className="flex-1 items-center justify-center bg-white">
-            <Text className="font-lato-bold text-xl text-primary">
-                Pantalla de detalle de gastos
-            </Text>
-        </View>
+      <View className="flex-1 items-center justify-center bg-white px-6">
+        <Text className="font-lato-bold text-xl text-primary">
+          Gasto no encontrado
+        </Text>
+        <Text className="mt-2 text-center font-lato text-base text-gray-500">
+          No encontramos un movimiento con ese identificador.
+        </Text>
+      </View>
     );
+  }
+
+  const meta = getCategoryMeta(expense.category);
+  const formattedDate = expense.createdAt
+    ? new Intl.DateTimeFormat("es-AR", { dateStyle: "long" }).format(
+      new Date(expense.createdAt),
+    )
+    : "Sin fecha";
+
+  return (
+    <View className="flex-1 bg-gray-50 p-6">
+      <View className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm gap-4">
+        <View
+          className="self-start rounded-full px-3 py-1"
+          style={{ backgroundColor: meta.bgColor }}
+        >
+          <Text className="text-xs font-bold" style={{ color: meta.color }}>
+            {expense.category}
+          </Text>
+        </View>
+
+        <Text className="font-lato-bold text-2xl text-gray-900">
+          {expense.title}
+        </Text>
+
+        <Text className="font-lato-bold text-3xl text-rose-500">
+          - {formatAmount(expense.amount)}
+        </Text>
+
+        <View className="border-t border-gray-100 pt-4 gap-3">
+          <View>
+            <Text className="text-xs uppercase text-gray-400">Fecha</Text>
+            <Text className="text-base text-gray-800">{formattedDate}</Text>
+          </View>
+          <View>
+            <Text className="text-xs uppercase text-gray-400">Notas</Text>
+            <Text className="text-base text-gray-800">
+              {expense.notes || "Sin notas"}
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  );
 };
 
 export default ExpenseDetailScreen;

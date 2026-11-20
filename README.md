@@ -55,3 +55,20 @@ Versión web desarrollada con React + Vite en [`expense-tracker-pwa/`](./expense
 | **Modo offline** | El bundle JS corre local en el dispositivo de forma nativa. | Service Worker (`vite-plugin-pwa` + Workbox) pre-cachea HTML, CSS, JS, fuentes e íconos. |
 | **Deep linking y URL** | Navegación por nombres de ruta y parámetros en memoria (`route.params`). | La URL es la fuente de verdad (`/expenses/:id` con `useParams()`), recargable con rewrites SPA. |
 | **Experiencia en iOS/Android** | Comportamiento nativo uniforme en ambas plataformas. | En Android soporta `beforeinstallprompt`; en iOS requiere instalación manual desde Safari (*Agregar a inicio*). |
+
+---
+
+## Sprint 3: Persistencia y sincronización
+
+### US #1 (`per-s3-us1`): Centralización de gastos con Context API
+
+- **¿Por qué usamos un Context (`ExpensesContext`)?**
+  Inicio, Listado, Detalle y el Formulario necesitan leer y modificar la **misma lista de gastos**. Si cada pantalla tuviera su propio `useState`, los datos quedarían desincronizados; si pasáramos props por cada nivel (*prop drilling*), acoplaríamos toda la navegación. Con `ExpensesContext` + el custom hook `useExpenses()`, cualquier pantalla accede al estado compartido sin importar dónde esté en el árbol.
+- **Desacoplamiento (fuente única de verdad):**
+  Las pantallas **no saben** de dónde salen ni dónde se guardan los datos (memoria hoy, `AsyncStorage` / `localStorage` mañana, Cloud Firestore después). Solo consumen `{ expenses, isLoaded, addExpense, removeExpense }` desde `useExpenses()`. Cuando cambiemos el almacenamiento en las próximas US, **las pantallas no se tocan**: solo cambia el `ExpensesProvider`.
+- **Dónde se monta el Provider:**
+  En la raíz de cada app (`App.tsx` envolviendo `NavigationContainer` en React Native; `main.jsx` envolviendo `BrowserRouter` en la PWA) para que todas las rutas compartan la misma instancia del estado.
+- **Modelo de datos unificado y `CATEGORIES`:**
+  Ambas versiones usan exactamente la misma estructura (`id`, `title`, `amount` como número, `category`, `notes`, `createdAt` en ISO) para poder compartir luego la colección en Firestore. Los colores y metadatos visuales de categorías no se guardan en los gastos: se resuelven desde `src/data/categories`.
+- **Estado actual (Etapa 1 — Volátil):**
+  En esta US los gastos todavía viven en `useState` dentro del `ExpensesProvider` (memoria RAM). La bandera `isLoaded` ya está expuesta en el contrato del Context para el patrón de hidratación que llega con `AsyncStorage` y `localStorage`.

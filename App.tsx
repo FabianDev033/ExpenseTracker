@@ -4,6 +4,7 @@ import { useFonts } from "expo-font";
 import { Lato_400Regular, Lato_700Bold } from "@expo-google-fonts/lato";
 import * as SplashScreen from "expo-splash-screen";
 import { NavigationContainer } from '@react-navigation/native';
+import { ExpensesProvider } from "./src/context/ExpensesContext";
 import RootStack from "./src/navigation/RootStack";
 import { navigationTheme } from "./src/theme/navigationTheme";
 
@@ -23,8 +24,10 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer theme={navigationTheme}>
-      <RootStack />
-    </NavigationContainer>
+    <ExpensesProvider>
+      <NavigationContainer theme={navigationTheme}>
+        <RootStack />
+      </NavigationContainer>
+    </ExpensesProvider>
   );
 }

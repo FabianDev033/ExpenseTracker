@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { categories, formatAmount } from '../data/mockExpenses';
+import { CATEGORY_NAMES, formatAmount } from '../data/categories';
 import '../styles/modal.css';
 
 /** @param {{ onClose: () => void, onSave: (message: string) => void }} props */
@@ -36,7 +36,7 @@ export default function NewExpenseModal({ onClose, onSave }) {
       !/^\d+(?:[.,]\d{1,2})?$/.test(rawAmount) ||
       !Number.isFinite(amount) ||
       amount <= 0 ||
-      !categories.includes(category)
+      !CATEGORY_NAMES.includes(/** @type {any} */ (category))
     ) {
       setError(
         'Completá el nombre, un monto mayor a cero (sin separador de miles) y la categoría.',
@@ -101,7 +101,7 @@ export default function NewExpenseModal({ onClose, onSave }) {
             <option value="" disabled>
               Seleccioná una categoría
             </option>
-            {categories.map((category) => (
+            {CATEGORY_NAMES.map((category) => (
               <option key={category}>{category}</option>
             ))}
           </select>

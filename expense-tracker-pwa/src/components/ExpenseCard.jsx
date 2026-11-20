@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom';
 import CategoryBadge from './CategoryBadge';
-import { formatAmount } from '../data/mockExpenses';
+import { formatAmount } from '../data/categories';
 
-/** @param {{ expense: import('../data/mockExpenses').Expense }} props */
+/** @param {{ expense: import('../context/ExpensesContext').Expense }} props */
 export default function ExpenseCard({ expense }) {
   return (
     <article>
       <Link className="expense-card" to={'/expenses/' + expense.id}>
         <div className="expense-card-description">
-          <h3>{expense.name}</h3>
+          <h3>{expense.title}</h3>
           <CategoryBadge category={expense.category} />
         </div>
         <p className="expense-amount">
