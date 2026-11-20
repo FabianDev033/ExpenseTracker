@@ -40,18 +40,34 @@ El precache cubre los recursos estáticos; no hay API ni almacenamiento de gasto
 
 ## Publicación HTTPS
 
+- **URL pública:** https://expense-tracker-pwa-chi.vercel.app/
+
 Elegir `expense-tracker-pwa` como directorio raíz en Vercel o Netlify. Build: `pnpm build`; salida: `dist`. Se incluyen reglas SPA para que `/expenses/:id` funcione al recargar y el worker se actualice sin caché HTTP persistente.
 
-La publicación y su URL HTTPS quedan pendientes. Las ramas del sprint se revisan mediante PR; la configuración de hosting está preparada, pero todavía no hay un despliegue verificado.
+En Android/Chrome el botón **Instalar App** aparece cuando el navegador ofrece la instalación. En iOS se muestran instrucciones de Safari, salvo que ya esté abierta desde la pantalla de inicio. La disponibilidad depende del navegador y de que la app todavía no esté instalada.
 
-En Android/Chrome el botón Instalar App aparece cuando el navegador ofrece la instalación. En iOS se muestran instrucciones de Safari, salvo que ya esté abierta desde la pantalla de inicio. La disponibilidad depende del navegador y de que la app todavía no esté instalada.
+## Demo en teléfono y comparativa con Expo Go
 
-## Validación manual en teléfono (pendiente)
+Instalación en dispositivo móvil y ejecución en modo `standalone` (sin barra del navegador):
 
-- Android: instalar desde HTTPS, abrir en standalone y comprobar nombre e icono.
-- iOS: Compartir → Agregar a la pantalla de inicio; el banner debe desaparecer al abrir la app instalada.
-- Abrir el formulario con teclado virtual, completar monto con coma, guardar, cancelar y volver a abrir.
-- Comprobar navegación atrás del sistema y áreas seguras.
+![Demo PWA instalada](docs/pwa-demo.gif)
+
+| Pantalla | React Native (Expo Go) | PWA (React + Vite) |
+| --- | --- | --- |
+| Inicio | ![Inicio Expo](../docs-utils/s6-demo-inicio.jpeg) | ![Inicio PWA](docs/home-mobile.png) |
+| Listado de gastos | ![Gastos Expo](../docs-utils/s6-demo-gastos.jpeg) | ![Gastos PWA](docs/expenses-mobile.png) |
+| Nuevo gasto (modal) | — | ![Modal PWA](docs/modal-mobile.png) |
+
+## Tabla comparativa: React Native vs PWA
+
+| Aspecto | React Native (Expo) | PWA (React + Vite) |
+| --- | --- | --- |
+| **Distribución e instalación** | Requiere Expo Go en desarrollo o compilación (`.apk`/`.ipa`) para tiendas. | Se distribuye por URL HTTPS y se instala desde el navegador con `manifest.json`. |
+| **Navegación** | React Navigation (`TabNavigator` + `StackNavigator` con `presentation: 'modal'`). | React Router (`MainLayout` con `<Outlet>` + `<NavLink>`) y `<dialog>` con `createPortal` para modales. |
+| **Estilos y layout** | `StyleSheet` / NativeWind (`View`, `Text`, `Pressable`) y `SafeAreaView`. | HTML semántico (`header`, `main`, `section`), CSS estándar con Flexbox, `100dvh` y `env(safe-area-inset-*)`. |
+| **Modo offline** | El bundle JS corre local en el dispositivo de forma nativa. | Service Worker (`vite-plugin-pwa` + Workbox) pre-cachea HTML, CSS, JS, fuentes e íconos. |
+| **Deep linking y URL** | Navegación por nombres de ruta y parámetros en memoria (`route.params`). | La URL es la fuente de verdad (`/expenses/:id` con `useParams()`), recargable con rewrites SPA. |
+| **Experiencia en iOS/Android** | Comportamiento nativo uniforme en ambas plataformas. | En Android soporta `beforeinstallprompt`; en iOS requiere instalación manual desde Safari (*Agregar a inicio*). |
 
 ## Lighthouse
 
