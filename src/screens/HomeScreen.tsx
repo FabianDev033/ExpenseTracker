@@ -31,7 +31,9 @@ const HomeScreen = ({ navigation }: any) => {
           {formatAmount(total)}
         </Text>
         <Text className="mt-1 font-lato text-sm text-gray-500">
-          {expenses.length} {expenses.length === 1 ? "movimiento" : "movimientos"}
+          {expenses.length === 0
+            ? "Todavía no registraste gastos"
+            : `${expenses.length} ${expenses.length === 1 ? "movimiento" : "movimientos"}`}
         </Text>
       </View>
 

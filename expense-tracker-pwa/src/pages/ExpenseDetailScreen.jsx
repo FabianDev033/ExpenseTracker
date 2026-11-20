@@ -7,12 +7,18 @@ import '../styles/expenses.css';
 export default function ExpenseDetailScreen() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { expenses } = useExpenses();
+  const { expenses, removeExpense } = useExpenses();
   const expense = expenses.find((item) => item.id === id);
   // A direct visit has no in-app history entry to return to.
   function goBack() {
     if (window.history.state?.idx > 0) navigate(-1);
     else navigate('/expenses', { replace: true });
+  }
+  function handleDelete() {
+    if (!expense) return;
+    if (!window.confirm(`¿Querés eliminar "${expense.title}"?`)) return;
+    removeExpense(expense.id);
+    navigate('/expenses', { replace: true });
   }
   if (!expense)
     return (
@@ -59,6 +65,9 @@ export default function ExpenseDetailScreen() {
           </div>
         </dl>
       </article>
+      <button className="button button-danger" type="button" onClick={handleDelete}>
+        Eliminar gasto
+      </button>
     </section>
   );
 }

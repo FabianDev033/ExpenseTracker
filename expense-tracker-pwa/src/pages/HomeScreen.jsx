@@ -20,7 +20,11 @@ export default function HomeScreen() {
       <section className="summary" aria-labelledby="summary-title">
         <h3 id="summary-title">Tus gastos registrados</h3>
         <p className="summary-total">{formatAmount(total)}</p>
-        <p className="muted">{expenses.length} movimientos</p>
+        <p className="muted">
+          {expenses.length === 0
+            ? 'Todavía no registraste gastos'
+            : `${expenses.length} ${expenses.length === 1 ? 'movimiento' : 'movimientos'}`}
+        </p>
       </section>
       <section className="quick-actions" aria-label="Accesos rápidos">
         <button className="button" onClick={openNewExpense}>

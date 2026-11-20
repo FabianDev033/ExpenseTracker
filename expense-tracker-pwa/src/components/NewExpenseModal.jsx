@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { useExpenses } from '../context/ExpensesContext';
 import { CATEGORY_NAMES, formatAmount } from '../data/categories';
 import '../styles/modal.css';
 
 /** @param {{ onClose: () => void, onSave: (message: string) => void }} props */
 export default function NewExpenseModal({ onClose, onSave }) {
+  const { addExpense } = useExpenses();
   const dialogRef = useRef(/** @type {HTMLDialogElement | null} */ (null));
   const [error, setError] = useState('');
 
@@ -31,6 +33,7 @@ export default function NewExpenseModal({ onClose, onSave }) {
     const rawAmount = String(data.get('amount') || '').trim();
     const amount = Number(rawAmount.replace(',', '.'));
     const category = String(data.get('category') || '');
+    const notes = String(data.get('notes') || '').trim();
     if (
       !name ||
       !/^\d+(?:[.,]\d{1,2})?$/.test(rawAmount) ||
@@ -43,14 +46,14 @@ export default function NewExpenseModal({ onClose, onSave }) {
       );
       return;
     }
+    addExpense({
+      title: name,
+      amount,
+      category,
+      notes,
+    });
     onSave(
-      'Gasto recibido: ' +
-        name +
-        ' · ' +
-        formatAmount(amount) +
-        ' · ' +
-        category +
-        '. Esta demo no guarda los datos.',
+      'Gasto registrado: ' + name + ' · ' + formatAmount(amount) + ' · ' + category,
     );
     onClose();
   }
@@ -105,6 +108,16 @@ export default function NewExpenseModal({ onClose, onSave }) {
               <option key={category}>{category}</option>
             ))}
           </select>
+        </div>
+        <div className="form-field">
+          <label htmlFor="expense-notes">Notas (opcional)</label>
+          <input
+            id="expense-notes"
+            name="notes"
+            type="text"
+            placeholder="Ej. Compra semanal"
+            maxLength={200}
+          />
         </div>
         {error && (
           <p role="alert" className="form-error">

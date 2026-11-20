@@ -1,10 +1,10 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, Pressable, Alert } from "react-native";
 import { useExpenses } from "../context/ExpensesContext";
 import { formatAmount, getCategoryMeta } from "../data/categories";
 
-const ExpenseDetailScreen = ({ route }: any) => {
-  const { expenses } = useExpenses();
+const ExpenseDetailScreen = ({ route, navigation }: any) => {
+  const { expenses, removeExpense } = useExpenses();
   const id = route?.params?.id;
   const expense = expenses.find((item) => item.id === id);
 
@@ -21,15 +21,33 @@ const ExpenseDetailScreen = ({ route }: any) => {
     );
   }
 
+  const handleDelete = () => {
+    Alert.alert(
+      "Eliminar gasto",
+      `¿Querés eliminar "${expense.title}"?`,
+      [
+        { text: "Cancelar", style: "cancel" },
+        {
+          text: "Eliminar",
+          style: "destructive",
+          onPress: () => {
+            removeExpense(expense.id);
+            navigation.goBack();
+          },
+        },
+      ],
+    );
+  };
+
   const meta = getCategoryMeta(expense.category);
   const formattedDate = expense.createdAt
     ? new Intl.DateTimeFormat("es-AR", { dateStyle: "long" }).format(
-      new Date(expense.createdAt),
-    )
+        new Date(expense.createdAt),
+      )
     : "Sin fecha";
 
   return (
-    <View className="flex-1 bg-gray-50 p-6">
+    <View className="flex-1 bg-gray-50 p-6 gap-6">
       <View className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm gap-4">
         <View
           className="self-start rounded-full px-3 py-1"
@@ -61,6 +79,16 @@ const ExpenseDetailScreen = ({ route }: any) => {
           </View>
         </View>
       </View>
+
+      <Pressable
+        accessibilityRole="button"
+        onPress={handleDelete}
+        className="min-h-12 items-center justify-center rounded-xl bg-rose-600 px-5 py-3 active:opacity-80"
+      >
+        <Text className="font-lato-bold text-base text-white">
+          Eliminar gasto
+        </Text>
+      </Pressable>
     </View>
   );
 };

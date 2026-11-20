@@ -72,3 +72,12 @@ Versión web desarrollada con React + Vite en [`expense-tracker-pwa/`](./expense
   Ambas versiones usan exactamente la misma estructura (`id`, `title`, `amount` como número, `category`, `notes`, `createdAt` en ISO) para poder compartir luego la colección en Firestore. Los colores y metadatos visuales de categorías no se guardan en los gastos: se resuelven desde `src/data/categories`.
 - **Estado actual (Etapa 1 — Volátil):**
   En esta US los gastos todavía viven en `useState` dentro del `ExpensesProvider` (memoria RAM). La bandera `isLoaded` ya está expuesta en el contrato del Context para el patrón de hidratación que llega con `AsyncStorage` y `localStorage`.
+
+### US #2 (`main-s3-us2`): Registrar y eliminar gastos
+
+- **Alta conectada al Context (`addExpense`):**
+  El formulario (`NewExpenseModal`) deja de hacer `Alert.alert` / mensajes de demo y llama a `addExpense()`. Se valida que el nombre no esté vacío, que el monto sea un número válido mayor a `0` (guardado como `number`, no `string`) y que tenga una categoría válida de `CATEGORIES`.
+- **Baja con confirmación nativa por plataforma (`removeExpense`):**
+  En el detalle (`/expenses/:id` en la PWA y `DetalleGasto` recibiendo `{ id }` en React Native), el botón **Eliminar** pide confirmación antes de borrar usando la API propia de cada entorno: `Alert.alert()` en React Native y `window.confirm()` en la PWA.
+- **Estados vacíos y totales reales:**
+  Al agregar o eliminar un gasto, el listado y el resumen de Inicio recalculan automáticamente el total y la cantidad de movimientos. Si la lista queda vacía, ambas apps muestran `"Todavía no registraste gastos"` (y en la PWA, navegar a un `/expenses/:id` inexistente o eliminado muestra el aviso de gasto no encontrado).

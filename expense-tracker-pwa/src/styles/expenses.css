@@ -55,6 +55,13 @@
 .back-button {
   align-self: flex-start;
 }
+.button-danger {
+  background: #dc2626;
+  color: #fff;
+}
+.button-danger:active {
+  background: #b91c1c;
+}
 .detail-card {
   border: 1px solid var(--line);
   border-radius: 16px;
