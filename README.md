@@ -15,18 +15,16 @@
 - Demo de `NavigationContainer` con los `TabScreens`, `StackNavigator` y Bottom Navigation Bar.
 
 #### Pantalla de inicio, gastos y configuración como TabScreens
-- Pantalla de inicio
-![Inicio](./docs-utils/s6-demo-inicio.jpeg)
-- Pantalla de gastos
-![Gastos](./docs-utils/s6-demo-gastos.jpeg)
-- Pantalla de configuración
-![Configuración](./docs-utils/s6-demo-configuracion.jpeg)
+
+| Inicio | Gastos | Configuración |
+| --- | --- | --- |
+| <img src="./docs-utils/s6-demo-inicio.jpeg" width="240" alt="Inicio Expo" /> | <img src="./docs-utils/s6-demo-gastos.jpeg" width="240" alt="Gastos Expo" /> | <img src="./docs-utils/s6-demo-configuracion.jpeg" width="240" alt="Configuración Expo" /> |
 
 #### Demostración de StackNavigator y Navegación Anidada
 - Se integró el `StackNavigator` junto con el `TabNavigator` para permitir navegación fluida entre pantallas y apertura de modales.
 - Permite acceder al detalle de un gasto puntual y abrir la pantalla modal para registrar nuevos gastos.
 
-![Demo Navegación](./docs-utils/s6-stackNavigation-demo.gif)
+<img src="./docs-utils/s6-stackNavigation-demo.gif" width="260" alt="Demo Navegación Expo" />
 
 ---
 
@@ -39,14 +37,14 @@ Versión web desarrollada con React + Vite en [`expense-tracker-pwa/`](./expense
 - **Lighthouse Mobile:** 100 Performance · 100 Accessibility · 100 Best Practices · 100 SEO ([ver captura](./expense-tracker-pwa/docs/lighthouse-mobile.png)).
 
 ### Demo instalada en teléfono (`standalone`)
-![Demo PWA instalada](./expense-tracker-pwa/docs/pwa-demo.gif)
+<img src="./expense-tracker-pwa/docs/pwa-demo.gif" width="260" alt="Demo PWA instalada" />
 
 ### Comparativa visual: React Native vs PWA
 | Pantalla | React Native (Expo Go) | PWA (React + Vite) |
 | --- | --- | --- |
-| Inicio | ![Inicio Expo](./docs-utils/s6-demo-inicio.jpeg) | ![Inicio PWA](./expense-tracker-pwa/docs/home-mobile.png) |
-| Listado de gastos | ![Gastos Expo](./docs-utils/s6-demo-gastos.jpeg) | ![Gastos PWA](./expense-tracker-pwa/docs/expenses-mobile.png) |
-| Nuevo gasto (modal) | — | ![Modal PWA](./expense-tracker-pwa/docs/modal-mobile.png) |
+| Inicio | <img src="./docs-utils/s6-demo-inicio.jpeg" width="240" alt="Inicio Expo" /> | <img src="./expense-tracker-pwa/docs/home-mobile.png" width="240" alt="Inicio PWA" /> |
+| Listado de gastos | <img src="./docs-utils/s6-demo-gastos.jpeg" width="240" alt="Gastos Expo" /> | <img src="./expense-tracker-pwa/docs/expenses-mobile.png" width="240" alt="Gastos PWA" /> |
+| Nuevo gasto (modal) | — | <img src="./expense-tracker-pwa/docs/modal-mobile.png" width="240" alt="Modal PWA" /> |
 
 ### Tabla comparativa: React Native vs PWA
 | Aspecto | React Native (Expo) | PWA (React + Vite) |
