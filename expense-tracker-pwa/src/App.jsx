@@ -1,5 +1,10 @@
+import { ExpensesProvider } from './features/expenses/ExpensesProvider';
 import AppRouter from './router/AppRouter';
 
 export default function App() {
-  return <AppRouter />;
+  return (
+    <ExpensesProvider>
+      <AppRouter />
+    </ExpensesProvider>
+  );
 }

@@ -1,12 +1,14 @@
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import CategoryBadge from '../components/CategoryBadge';
-import { mockExpenses, formatAmount } from '../data/mockExpenses';
+import { formatAmount } from '../data/mockExpenses';
+import { useExpenses } from '../features/expenses/useExpenses';
 import '../styles/expenses.css';
 
 export default function ExpenseDetailScreen() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const expense = mockExpenses.find((item) => item.id === id);
+  const { expenses } = useExpenses();
+  const expense = expenses.find((item) => item.id === id);
   // A direct visit has no in-app history entry to return to.
   function goBack() {
     if (window.history.state?.idx > 0) navigate(-1);
