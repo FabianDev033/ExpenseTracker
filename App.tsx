@@ -1,11 +1,13 @@
-import "./global.css";
-import { useEffect } from "react";
-import { useFonts } from "expo-font";
-import { Lato_400Regular, Lato_700Bold } from "@expo-google-fonts/lato";
-import * as SplashScreen from "expo-splash-screen";
+import './global.css';
+import { useEffect } from 'react';
+import { useFonts } from 'expo-font';
+import { Lato_400Regular, Lato_700Bold } from '@expo-google-fonts/lato';
+import * as SplashScreen from 'expo-splash-screen';
 import { NavigationContainer } from '@react-navigation/native';
-import RootStack from "./src/navigation/RootStack";
-import { navigationTheme } from "./src/theme/navigationTheme";
+import RootStack from './src/navigation/RootStack';
+import { navigationTheme } from './src/theme/navigationTheme';
+import { ExpensesProvider } from './src/features/expenses/ExpenseProvider';
+import { SettingsProvider } from './src/features/settings/SettingsProvider';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -23,8 +25,12 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer theme={navigationTheme}>
-      <RootStack />
-    </NavigationContainer>
+    <ExpensesProvider>
+      <SettingsProvider>
+        <NavigationContainer theme={navigationTheme}>
+          <RootStack />
+        </NavigationContainer>
+      </SettingsProvider>
+    </ExpensesProvider>
   );
 }
