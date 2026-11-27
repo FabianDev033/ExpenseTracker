@@ -3,7 +3,12 @@ import { createContext, useContext } from 'react';
 /**
  * @typedef {import('../../data/mockExpenses').Expense} Expense
  * @typedef {{ name: string, amount: number, category: string, notes?: string }} NewExpenseInput
- * @typedef {{ expenses: Expense[], addExpense: (input: NewExpenseInput) => Expense }} ExpensesContextValue
+ * @typedef {{
+ *   expenses: Expense[],
+ *   isLoaded: boolean,
+ *   addExpense: (input: NewExpenseInput) => void,
+ *   deleteExpense: (id: string) => void,
+ * }} ExpensesContextValue
  */
 
 export const ExpensesContext = createContext(/** @type {ExpensesContextValue | null} */ (null));

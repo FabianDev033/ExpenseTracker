@@ -1,13 +1,25 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from 'react';
 
-import { STORAGE_KEYS } from '../../storage/storageKeys';
+import {
+  createExpense,
+  removeExpense,
+  subscribeToExpenses,
+  type NewExpenseInput,
+} from './expenseRepository';
 import type { Expense } from './types';
 
 interface ExpensesContextValue {
   expenses: Expense[];
   isLoaded: boolean;
-  addExpense: (expense: Expense) => void;
+  addExpense: (expense: Expense | NewExpenseInput) => void;
+  deleteExpense: (id: string) => void;
 }
 
 const ExpensesContext = createContext<ExpensesContextValue | undefined>(undefined);
@@ -17,40 +29,38 @@ export function ExpensesProvider({ children }: { children: ReactNode }) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    const LoadExpenses = async () => {
-      try {
-        const savedExpenses = await AsyncStorage.getItem(STORAGE_KEYS.expenses);
-        if (savedExpenses !== null) {
-          setExpenses(JSON.parse(savedExpenses) as Expense[]);
-        }
-      } catch (error) {
-        console.error('No se pudieron cargar los gastos:', error);
-      } finally {
+    const unsubscribe = subscribeToExpenses(
+      (nextExpenses) => {
+        setExpenses(nextExpenses);
         setIsLoaded(true);
-      }
-    };
-    void LoadExpenses();
+      },
+      (error) => {
+        console.error('No se pudieron sincronizar los gastos con Firestore:', error);
+        setIsLoaded(true);
+      },
+    );
+
+    return unsubscribe;
   }, []);
 
-  useEffect(() => {
-    if (!isLoaded) return;
+  const addExpense = useCallback((expense: Expense | NewExpenseInput) => {
+    void createExpense({
+      name: expense.name,
+      amount: expense.amount,
+      category: expense.category,
+    }).catch((error) => {
+      console.error('No se pudo guardar el gasto en Firestore:', error);
+    });
+  }, []);
 
-    const savedExpenses = async () => {
-      try {
-        await AsyncStorage.setItem(STORAGE_KEYS.expenses, JSON.stringify(expenses));
-      } catch (error) {
-        console.error('No se pudieron guardar los gastos:', error);
-      }
-    };
-    void savedExpenses();
-  }, [expenses, isLoaded]);
-
-  const addExpense = (expense: Expense) => {
-    setExpenses((currentExpenses) => [...currentExpenses, expense]);
-  };
+  const deleteExpense = useCallback((id: string) => {
+    void removeExpense(id).catch((error) => {
+      console.error('No se pudo eliminar el gasto en Firestore:', error);
+    });
+  }, []);
 
   return (
-    <ExpensesContext.Provider value={{ expenses, isLoaded, addExpense }}>
+    <ExpensesContext.Provider value={{ expenses, isLoaded, addExpense, deleteExpense }}>
       {children}
     </ExpensesContext.Provider>
   );
@@ -60,7 +70,7 @@ export function useExpense() {
   const context = useContext(ExpensesContext);
 
   if (!context) {
-    throw new Error('useExpenses debe usarse dentro de ExpensesProvider');
+    throw new Error('useExpense debe usarse dentro de ExpensesProvider');
   }
   return context;
 }

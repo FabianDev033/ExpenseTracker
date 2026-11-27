@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { readExpenses, saveExpenses } from './expenseStorage';
+import { useCallback, useEffect, useState } from 'react';
+import { createExpense, removeExpense, subscribeToExpenses } from './expenseRepository';
 import { ExpensesContext } from './useExpenses';
 
 /**
@@ -7,54 +7,48 @@ import { ExpensesContext } from './useExpenses';
  * @typedef {import('./useExpenses').NewExpenseInput} NewExpenseInput
  */
 
-/** @returns {string} */
-function createExpenseId() {
-  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
-    return crypto.randomUUID();
-  }
-  return String(Date.now());
-}
-
-/** @returns {string} */
-function getTodayISODate() {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const day = String(now.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-}
-
 /** @param {{ children: import('react').ReactNode }} props */
 export function ExpensesProvider({ children }) {
-  const [expenses, setExpenses] = useState(() => readExpenses());
-  const lastSavedRef = useRef(expenses);
+  const [expenses, setExpenses] = useState(/** @type {Expense[]} */ ([]));
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    if (lastSavedRef.current === expenses) return;
-    lastSavedRef.current = expenses;
-    saveExpenses(expenses);
-  }, [expenses]);
+    const unsubscribe = subscribeToExpenses(
+      (nextExpenses) => {
+        setExpenses(nextExpenses);
+        setIsLoaded(true);
+      },
+      (error) => {
+        console.error('No se pudieron sincronizar los gastos con Firestore:', error);
+        setIsLoaded(true);
+      },
+    );
+
+    return unsubscribe;
+  }, []);
 
   const addExpense = useCallback(
     /** @param {NewExpenseInput} input */
     (input) => {
-      /** @type {Expense} */
-      const newExpense = {
-        id: createExpenseId(),
-        name: input.name,
-        amount: input.amount,
-        category: input.category,
-        date: getTodayISODate(),
-        ...(input.notes ? { notes: input.notes } : {}),
-      };
-      setExpenses((current) => [...current, newExpense]);
-      return newExpense;
+      void createExpense(input).catch((error) => {
+        console.error('No se pudo guardar el gasto en Firestore:', error);
+      });
+    },
+    [],
+  );
+
+  const deleteExpense = useCallback(
+    /** @param {string} id */
+    (id) => {
+      void removeExpense(id).catch((error) => {
+        console.error('No se pudo eliminar el gasto en Firestore:', error);
+      });
     },
     [],
   );
 
   return (
-    <ExpensesContext.Provider value={{ expenses, addExpense }}>
+    <ExpensesContext.Provider value={{ expenses, isLoaded, addExpense, deleteExpense }}>
       {children}
     </ExpensesContext.Provider>
   );
