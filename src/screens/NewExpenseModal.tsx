@@ -1,18 +1,53 @@
-
 import React, { useState } from "react";
-import { View, Text, TextInput, Alert } from "react-native";
+import {
+    Text,
+    TextInput,
+    View,
+} from "react-native";
+import {
+    type NavigationProp,
+    type ParamListBase,
+    useNavigation,
+} from "@react-navigation/native";
+
 import AppButton from "../components/AppButton";
+import { useExpense } from "../features/expenses/ExpenseProvider";
 
 const NewExpenseModal = () => {
     const [name, setName] = useState("");
     const [amount, setAmount] = useState("");
     const [category, setCategory] = useState("");
+    const [error, setError] = useState<string | null>(null);
+    const { addExpense } = useExpense();
+    const navigation = useNavigation<NavigationProp<ParamListBase>>();
 
     const handleSave = () => {
-        Alert.alert(
-            "Nuevo gasto",
-            `Nombre: ${name}\nMonto: ${amount}\nCategoría: ${category}`
-        );
+        const trimmedName = name.trim();
+        const trimmedCategory = category.trim();
+        const parsedAmount = Number(amount.trim().replace(",", "."));
+
+        if (!trimmedName || !trimmedCategory) {
+            setError("Completá el nombre y la categoría del gasto.");
+            return;
+        }
+
+        if (!Number.isFinite(parsedAmount) || parsedAmount <= 0) {
+            setError("Ingresá un monto mayor a cero.");
+            return;
+        }
+
+        addExpense({
+            id: Date.now().toString(),
+            name: trimmedName,
+            amount: parsedAmount,
+            category: trimmedCategory,
+        });
+
+        setName("");
+        setAmount("");
+        setCategory("");
+        setError(null);
+        navigation.goBack();
     };
 
     return (
@@ -26,7 +61,10 @@ const NewExpenseModal = () => {
                 </Text>
                 <TextInput
                     value={name}
-                    onChangeText={setName}
+                    onChangeText={(value) => {
+                        setName(value);
+                        setError(null);
+                    }}
                     placeholder="Ej. Supermercado"
                     className="rounded-xl border border-gray-300 p-3"
                 />
@@ -37,7 +75,10 @@ const NewExpenseModal = () => {
                 </Text>
                 <TextInput
                     value={amount}
-                    onChangeText={setAmount}
+                    onChangeText={(value) => {
+                        setAmount(value);
+                        setError(null);
+                    }}
                     placeholder="Ej. 25000"
                     keyboardType="numeric"
                     className="rounded-xl border border-gray-300 p-3"
@@ -49,15 +90,20 @@ const NewExpenseModal = () => {
                 </Text>
                 <TextInput
                     value={category}
-                    onChangeText={setCategory}
+                    onChangeText={(value) => {
+                        setCategory(value);
+                        setError(null);
+                    }}
                     placeholder="Ej. Alimentación"
                     className="rounded-xl border border-gray-300 p-3"
                 />
             </View>
-            <AppButton
-                title="Guardar"
-                onPress={handleSave}
-            />
+            {error ? (
+                <Text accessibilityRole="alert" className="text-sm text-red-600">
+                    {error}
+                </Text>
+            ) : null}
+            <AppButton title="Guardar" onPress={handleSave} />
         </View>
     );
 };

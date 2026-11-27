@@ -1,36 +1,9 @@
 
 import React from "react";
-import { View, Text, FlatList } from "react-native";
+import { ActivityIndicator, FlatList, Text, View } from "react-native";
 
-// 1. Estructura de un gasto
-export interface Expense {
-    id: string;
-    name: string;
-    amount: number;
-    category: string;
-}
-
-// 2. Datos estaticos de ejemplo
-const EXPENSES_DATA: Expense[] = [
-    {
-        id: "1",
-        name: "Supermercado",
-        amount: 25000,
-        category: "Alimentación",
-    },
-    {
-        id: "2",
-        name: "Combustible",
-        amount: 18000,
-        category: "Transporte",
-    },
-    {
-        id: "3",
-        name: "Internet",
-        amount: 32000,
-        category: "Servicios",
-    },
-];
+import { useExpense } from "../features/expenses/ExpenseProvider";
+import type { Expense } from "../features/expenses/types";
 
 // 3. Componente para cada gasto
 function ExpenseItem({ item }: { item: Expense }) {
@@ -60,9 +33,19 @@ function ExpenseItem({ item }: { item: Expense }) {
 
 // 4. Componente principal que lista los gastos
 export function ExpenseList() {
+    const { expenses, isLoaded } = useExpense();
+
+    if (!isLoaded) {
+        return (
+            <View className="flex-1 items-center justify-center">
+                <ActivityIndicator size="large" />
+            </View>
+        );
+    }
+
     return (
         <FlatList
-            data={EXPENSES_DATA}
+            data={expenses}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => <ExpenseItem item={item} />}
             showsVerticalScrollIndicator={false}
