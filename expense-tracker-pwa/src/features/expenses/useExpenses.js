@@ -7,7 +7,7 @@ import { createContext, useContext } from 'react';
  *   expenses: Expense[],
  *   isLoaded: boolean,
  *   addExpense: (input: NewExpenseInput) => void,
- *   deleteExpense: (id: string) => void,
+ *   deleteExpense: (id: string) => Promise<void>,
  * }} ExpensesContextValue
  */
 

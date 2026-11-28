@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import CategoryBadge from '../components/CategoryBadge';
 import { formatAmount } from '../data/mockExpenses';
@@ -7,12 +8,29 @@ import '../styles/expenses.css';
 export default function ExpenseDetailScreen() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { expenses } = useExpenses();
+  const { expenses, deleteExpense } = useExpenses();
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState('');
   const expense = expenses.find((item) => item.id === id);
   // A direct visit has no in-app history entry to return to.
   function goBack() {
     if (window.history.state?.idx > 0) navigate(-1);
     else navigate('/expenses', { replace: true });
+  }
+  async function handleDelete() {
+    if (!expense || isDeleting) return;
+    if (!window.confirm(`¿Querés eliminar “${expense.name}”? Esta acción no se puede deshacer.`))
+      return;
+
+    setIsDeleting(true);
+    setDeleteError('');
+    try {
+      await deleteExpense(expense.id);
+      goBack();
+    } catch {
+      setDeleteError('No se pudo eliminar el gasto. Revisá tu conexión e intentá nuevamente.');
+      setIsDeleting(false);
+    }
   }
   if (!expense)
     return (
@@ -59,6 +77,14 @@ export default function ExpenseDetailScreen() {
           </div>
         </dl>
       </article>
+      {deleteError ? (
+        <p className="delete-error" role="alert">
+          {deleteError}
+        </p>
+      ) : null}
+      <button className="button delete-button" onClick={handleDelete} disabled={isDeleting}>
+        {isDeleting ? 'Eliminando…' : 'Eliminar gasto'}
+      </button>
     </section>
   );
 }
