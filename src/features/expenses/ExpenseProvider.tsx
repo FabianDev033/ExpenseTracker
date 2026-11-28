@@ -19,7 +19,7 @@ interface ExpensesContextValue {
   expenses: Expense[];
   isLoaded: boolean;
   addExpense: (expense: Expense | NewExpenseInput) => void;
-  deleteExpense: (id: string) => void;
+  deleteExpense: (id: string) => Promise<void>;
 }
 
 const ExpensesContext = createContext<ExpensesContextValue | undefined>(undefined);
@@ -53,11 +53,7 @@ export function ExpensesProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
-  const deleteExpense = useCallback((id: string) => {
-    void removeExpense(id).catch((error) => {
-      console.error('No se pudo eliminar el gasto en Firestore:', error);
-    });
-  }, []);
+  const deleteExpense = useCallback((id: string) => removeExpense(id), []);
 
   return (
     <ExpensesContext.Provider value={{ expenses, isLoaded, addExpense, deleteExpense }}>

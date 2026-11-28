@@ -39,11 +39,7 @@ export function ExpensesProvider({ children }) {
 
   const deleteExpense = useCallback(
     /** @param {string} id */
-    (id) => {
-      void removeExpense(id).catch((error) => {
-        console.error('No se pudo eliminar el gasto en Firestore:', error);
-      });
-    },
+    (id) => removeExpense(id),
     [],
   );
 

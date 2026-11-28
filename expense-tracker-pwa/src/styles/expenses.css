@@ -55,6 +55,16 @@
 .back-button {
   align-self: flex-start;
 }
+.delete-button {
+  width: 100%;
+  background: #fff;
+  border-color: #fecaca;
+  color: #b91c1c;
+}
+.delete-error {
+  color: #b91c1c;
+  line-height: 1.5;
+}
 .detail-card {
   border: 1px solid var(--line);
   border-radius: 16px;
